@@ -238,9 +238,7 @@ class _ProfilePageState extends State<ProfilePage>
                           Expanded(
                             child: TabBarView(
                               children: [
-                                // Add widgets for Tab 1 content
                                 ShowUserPosts(),
-                                // Add widgets for Tab 2 content
                                 Center(child: Text('No Book Marked Item yet!')),
                               ],
                             ),

@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -55,27 +56,38 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: mobileBackgroundColor,
         ),
 
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                return const ResponsiveLayout(
-                    webScreen: WebScreenLayout(),
-                    mobileScreen: MobileScreenLayout());
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
+        home: AnimatedSplashScreen(
+          splashTransition: SplashTransition.fadeTransition,
+          backgroundColor: mobileBackgroundColor,
+          splash: Center(
+            child: Image.asset(
+              'assets/images/instagram logo.png',
+              fit: BoxFit.contain,
+            ),
+          ),
+          duration: 2500,
+          nextScreen: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  return const ResponsiveLayout(
+                      webScreen: WebScreenLayout(),
+                      mobileScreen: MobileScreenLayout());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                }
               }
-            }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return  LoadingIndicator();
-            }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingIndicator();
+              }
 
-            return const LoginPage();
-          },
+              return const LoginPage();
+            },
+          ),
         ),
 
         // home: const ResponsiveLayout(
