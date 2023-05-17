@@ -37,8 +37,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     _pageController.jumpToPage(_selectedTab);
   }
 
-
-
 //fetch data from firestore
   void fetchData(BuildContext ctx) async {
     setState(() {
@@ -46,6 +44,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     });
     //fetch current user data from firebase firestore
     final user = FirebaseAuth.instance.currentUser;
+    Provider.of<UserMethods>(ctx, listen: false).getCurrentUser();
 
     if (user == null) {
       await AuthMethods().signoutUser();
@@ -57,6 +56,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       isLoading = false;
     });
   }
+
   @override
   void initState() {
     _pageController = PageController();
@@ -119,6 +119,4 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       ),
     );
   }
-
-
 }

@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/helper%20functions/firestore_methods.dart';
-import 'package:instagram_clone/helper%20functions/user_methods.dart';
 import 'package:instagram_clone/pages/comment_page.dart';
 import 'package:instagram_clone/utility/colors.dart';
 import 'package:instagram_clone/widgets/loading_indicator.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import 'like_animation.dart';
 
@@ -21,6 +20,8 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   int commentCount = 0;
+  final user = FirebaseAuth.instance.currentUser;
+
 //created method for date time convert to time based
   String _postedDateTime(DateTime createAt) {
     final differnce = DateTime.now().difference(createAt);
@@ -42,7 +43,6 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserMethods>(context, listen: false).currentUser;
     return Container(
       color: mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -91,14 +91,14 @@ class _PostCardState extends State<PostCard> {
             onDoubleTap: () async {
               //checking post is already liked or not
               //the post not liked then showing the animation.otherwise not showing the animation
-              if (!widget.snapshot['likes'].contains(user.uid)) {
+              if (!widget.snapshot['likes'].contains(user!.uid)) {
                 setState(() {
                   isLikeAnimating = true;
                 });
               }
               //store the value to firestore
               await FirestoreMethods.togglePostLike(widget.snapshot['postId'],
-                  user.uid, widget.snapshot['likes']);
+                  user!.uid, widget.snapshot['likes']);
             },
             child: Stack(
               alignment: Alignment.center,
@@ -143,16 +143,16 @@ class _PostCardState extends State<PostCard> {
           Row(
             children: [
               LikeAnimation(
-                isAnimating: widget.snapshot['likes'].contains(user.uid),
+                isAnimating: widget.snapshot['likes'].contains(user!.uid),
                 smallLike: true,
                 child: IconButton(
                   onPressed: () async {
                     await FirestoreMethods.togglePostLike(
                         widget.snapshot['postId'],
-                        user.uid,
+                        user!.uid,
                         widget.snapshot['likes']);
                   },
-                  icon: widget.snapshot['likes'].contains(user.uid)
+                  icon: widget.snapshot['likes'].contains(user!.uid)
                       ? const Icon(
                           Icons.favorite,
                           color: Colors.red,

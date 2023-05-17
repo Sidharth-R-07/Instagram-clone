@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           ),
-          duration: 2500,
+          duration: 1000,
           nextScreen: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {

@@ -63,6 +63,10 @@ class HomeBody extends StatelessWidget {
             return ErrorPage(errorText: snapshot.error.toString());
           }
 
+          if (snapshot.data == null) {
+            return LoadingIndicator();
+          }
+
           return Container(
             margin: EdgeInsets.symmetric(
               horizontal: size.width > webScreenSize ? webScreenSize * 0.3 : 0,
