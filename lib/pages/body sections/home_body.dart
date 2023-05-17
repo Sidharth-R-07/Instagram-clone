@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/pages/error_page.dart';
 import 'package:instagram_clone/utility/colors.dart';
 import 'package:instagram_clone/widgets/loading_indicator.dart';
 
@@ -56,6 +57,10 @@ class HomeBody extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return LoadingIndicator();
+          }
+
+          if (snapshot.hasError) {
+            return ErrorPage(errorText: snapshot.error.toString());
           }
 
           return Container(

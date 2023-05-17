@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:instagram_clone/helper%20functions/auth_methods.dart';
 import 'package:instagram_clone/helper%20functions/firestore_methods.dart';
 import 'package:instagram_clone/helper%20functions/user_methods.dart';
+import 'package:instagram_clone/pages/login_page.dart';
 import 'package:instagram_clone/utility/colors.dart';
 import 'package:instagram_clone/widgets/loading_indicator.dart';
 import 'package:instagram_clone/widgets/profile_button.dart';
@@ -104,7 +105,14 @@ class _ProfilePageState extends State<ProfilePage>
                         child: const Text('Sign Out'),
                         onPressed: () async {
                           //sign outing user
-                          await AuthMethods().signoutUser();
+                          await AuthMethods()
+                              .signoutUser()
+                              .then((value) => Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                  (route) => false));
                         }),
                     const Divider()
                   ],
@@ -222,11 +230,11 @@ class _ProfilePageState extends State<ProfilePage>
                   const SizedBox(
                     height: 10,
                   ),
-                  DefaultTabController(
+                  const DefaultTabController(
                     length: 2, // Number of tabs
                     child: Expanded(
                       child: Column(
-                        children: const [
+                        children: [
                           TabBar(
                             tabs: [
                               Icon(Icons.photo_library_outlined),
@@ -280,7 +288,6 @@ class ShowUserPosts extends StatelessWidget {
     return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection('posts')
-       
           .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get(),
       builder: (context, snapshot) {

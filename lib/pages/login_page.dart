@@ -35,6 +35,9 @@ class _LoginPageState extends State<LoginPage> {
     emailController.dispose();
     passwordController.dispose();
     displayError = '';
+    if (!mounted) {
+      setState(() => isLoading = false);
+    }
     super.dispose();
   }
 
@@ -50,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Container(
             padding: size.width > webScreenSize
                 ? EdgeInsets.symmetric(horizontal: size.width / 3)
-                :const EdgeInsets.symmetric(horizontal: 32),
+                : const EdgeInsets.symmetric(horizontal: 32),
             width: double.infinity,
             height: MediaQuery.of(context).size.height - 50,
             child: Form(
@@ -198,17 +201,13 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
           ctx: context);
-      if (result == null) {
-        return;
-      }
+
       setState(() {
         displayError = result;
       });
       // Toast.show(result, duration: 2, gravity: Toast.bottom);
       debugPrint('result:$result');
     }
-    if (mounted) {
-      setState(() => isLoading = false);
-    }
+    setState(() => isLoading = false);
   }
 }

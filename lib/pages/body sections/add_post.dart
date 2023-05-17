@@ -68,11 +68,11 @@ class _AddPostBodyState extends State<AddPostBody> {
                     border: Border.all(width: 1, color: secondaryColor),
                     borderRadius: BorderRadius.circular(17),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.upload_rounded,
                         size: 80,

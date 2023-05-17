@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class LikeAnimation extends StatefulWidget {
   final Widget child;
   Duration duration;

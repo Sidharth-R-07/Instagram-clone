@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utility/colors.dart';
 
+// ignore: must_be_immutable
 class LoadingIndicator extends StatelessWidget {
 
   Color? color;
